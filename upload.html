@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="file" name="file" id="file" multiple>
+    <input type="submit" value="上传" id="btn">
+    <progress value="0" min="0" max="100"></progress>
+</body>
+<script>
+    var file=document.querySelector("#file");
+    var btn=document.querySelector("#btn");
+    var progress=document.querySelector("progress");
+    btn.onclick=function(){
+        var fileobj=file.files[0];
+        //FormData() js当中表单键值对的集合 h5
+        var fd=new FormData();
+        fd.append("file",fileobj);
+        var xhr=new XMLHttpRequest();
+        xhr.onload=function(){
+           console.log(xhr.response);
+        };
+        xhr.upload.onprogress=function(e){
+            var bili=e.loaded/e.total*100;
+            progress.value=bili;
+        }
+        xhr.open("post","upload.php");
+        xhr.send(fd);
+    }
+</script>
+</html>
